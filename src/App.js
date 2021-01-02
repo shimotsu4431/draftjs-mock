@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Editor, EditorState, convertFromRaw} from 'draft-js';
+import {Editor, EditorState, convertFromRaw, getDefaultKeyBinding } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './App.css'
 
@@ -25,8 +25,28 @@ const emptyData = EditorState.createWithContent(
 function EditorApp() {
   const [editorState, setEditorState] = useState(emptyData);
 
+  /**
+   * カスタムキーバインディングの定義
+   */
+  const myKeyBindingFn = (e) => {
+
+    if (e.key === "Enter") {
+      alert("Enter!!!")
+      
+      return "disabled"
+    }
+
+    return getDefaultKeyBinding(e)
+  }
+
   return (
-    <div className="wrapper"><Editor editorState={editorState} onChange={setEditorState} /></div>
+    <div className="wrapper">
+      <Editor
+        editorState={editorState}
+        onChange={setEditorState}
+        keyBindingFn={myKeyBindingFn}
+      />
+    </div>
   );
 }
 
