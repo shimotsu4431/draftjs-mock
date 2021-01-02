@@ -9,7 +9,7 @@ function EditorApp() {
   );
 
   return (
-    <div className="wrapper"><Editor editorState={editorState} onChange={setEditorState} /></div>
+    <div className="wrapper"><Editor editorState={editorState} onChange={setEditorState} readOnly={true}/></div>
   );
 }
 
