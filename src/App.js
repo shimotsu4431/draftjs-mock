@@ -1,42 +1,21 @@
 import React, { useState } from "react";
-import {Editor, EditorState, convertFromRaw, getDefaultKeyBinding } from 'draft-js';
+import { Editor, EditorState} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './App.css'
 
-const initData = convertFromRaw({
-  entityMap: {},
-  blocks: [
-    {
-      key: "xxxxxx",
-      text: "ここに初期テキストがはいります。",
-      type: "unstyled",
-      depth: 0,
-      entityRanges: [],
-      inlineStyleRanges: [],
-      data: {},
-    },
-  ],
-})
-
-const emptyData = EditorState.createWithContent(
-  initData,
-)
-
 function EditorApp() {
-  const [editorState, setEditorState] = useState(emptyData);
+  const [editorState, setEditorState] = useState(
+    () => EditorState.createEmpty(),
+  );
 
-  /**
-   * カスタムキーバインディングの定義
-   */
-  const myKeyBindingFn = (e) => {
-
-    if (e.key === "Enter") {
-      alert("Enter!!!")
-      
-      return "disabled"
+  const myBlockRenderer = (block) => {
+    if (block.getType() === "blockquote") {
+      return {
+        editable: false,
+      }
     }
 
-    return getDefaultKeyBinding(e)
+    return null
   }
 
   return (
@@ -44,7 +23,7 @@ function EditorApp() {
       <Editor
         editorState={editorState}
         onChange={setEditorState}
-        keyBindingFn={myKeyBindingFn}
+        blockRendererFn={myBlockRenderer}
       />
     </div>
   );
